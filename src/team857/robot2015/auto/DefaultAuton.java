@@ -1,13 +1,13 @@
 package team857.robot2015.auto;
 
 import team857.robot2015.RobotDrive;
-import team857.yetiRobot.PeriodControl;
+import team857.yetiRobot.PeriodController;
 
-public class DefaultAuton implements PeriodControl {
-	RobotDrive robot;
-	public DefaultAuton(RobotDrive drive){
-		robot = drive;
+public class DefaultAuton implements PeriodController {
+	public void init(){
+		RobotDrive.lights(false);
 	}
-	public void init(){}
-	public void run(double time){}
+	public void run(double time){
+		//nop
+	}
 }

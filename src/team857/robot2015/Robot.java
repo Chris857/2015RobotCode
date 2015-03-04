@@ -1,73 +1,51 @@
 package team857.robot2015;
 
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Direction;
-import team857.robot2015.auto.AutonControl;
-import team857.robot2015.auto.DefaultAuton;
-import team857.robot2015.auto.FancyAuton;
-import team857.robot2015.auto.SecondAuton;
-import team857.yetiRobot.PeriodControl;
-import team857.yetiRobot.YetiRobot;
+import team857.robot2015.auto.*;
+import team857.yetiRobot.*;
 
-public class Robot extends YetiRobot implements PeriodControl {
+public class Robot extends YetiRobot implements PeriodController {
 	CameraServer camera;
-	RobotDrive robotDrive;
-	Relay lights;
+	int set;
 	
-	Joystick ctr;
-	int set = 0;
-	
-	public void robotInit(){
-		ctr = new Joystick(3);
-		lights = new Relay(0);
-		lights.setDirection(Direction.kForward);
-		robotDrive = new RobotDrive();
-		teleopControl = new TeleopControl(robotDrive);
-		disabledControl = this;
+	public void start(){
+		setTeleopController(new TeleopControl());
+		setDisabledController(this);
 		
 		camera = CameraServer.getInstance();
-    	camera.setQuality(50);
-    	camera.startAutomaticCapture("cam0");
-    	
-    	put("Happy Space Day! Ready to go! :D");
-    	
-    	robotDrive.init();
-    	init();
-    	run(0);
+		camera.setQuality(50);
+		camera.startAutomaticCapture("cam0");
+		
+		put("Happy Space Day. I am ready! :D");
+		
+		// Forcing an Autonomous to be selected.
+		init();
+		run(0);
 	}
 	
-	public void setAuton(PeriodControl auton){
-		autonControl = auton;
-	}
-	public int get(){
-		int c=0;
-		if(ctr.getRawButton(1)) c+=1;
-		if(ctr.getRawButton(2)) c+=2;
-		if(ctr.getRawButton(3)) c+=4;
-		if(ctr.getRawButton(4)) c+=8;
-		if(ctr.getRawButton(5)) c+=16;
-		return c;
-	}
+	/*-- These are the PeriodController functions --*/
 	public void init(){
 		set = 0;
 	}
 	public void run(double time){
-		lights.setDirection(Direction.kForward);
-		if(set!=get()){
-			set = get();
+		RobotDrive.lights(true);
+		if(set != m_ds.getStickButtons(3)){
+			set = m_ds.getStickButtons(3);
 			switch(set){
 				case 1:
-					setAuton(new AutonControl(robotDrive));break;
+					setAutonomousController(new AutonControl());break; //pause, move
 				case 2:
-					setAuton(new SecondAuton(robotDrive));break;
+					setAutonomousController(new SecondAuton());break; //move
+				case 19:
+					setAutonomousController(new ToteContainerAuton());break; //starts on Container, stacks on tote, takes both.
 				case 22:
-					setAuton(new FancyAuton(robotDrive));break;
+					setAutonomousController(new FancyAuton());break; //non-touched grab & move
+				case 23:
+					setAutonomousController(new FancyAutonTwo());break; //touching grab & move
 				default:
-					setAuton(new DefaultAuton(robotDrive));
+					setAutonomousController(new DefaultAuton()); //nothing
 			}
-			Robot.put("Now using autonomous #"+set);
+			put("Now using autonomous #"+set);
 		}
 	}
 }
