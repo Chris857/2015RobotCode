@@ -8,17 +8,17 @@ public class FancyAuton implements PeriodController {
 		RobotDrive.lights(false);
 	}
 	@SuppressWarnings("static-access") public void run(double time){
-		/**/ if(time>10.0) RobotDrive.stop();
-		else if(time> 5.1) RobotDrive.winch(0).grab(false);
-		else if(time> 4.7) RobotDrive.winch(-0.6);
-		else if(time> 4.6) RobotDrive.stop();
-		else if(time> 3.0) RobotDrive.drive(0.74);
-		else if(time> 2.9) RobotDrive.stop();
-		else if(time> 2.0) RobotDrive.winch(0).drive(0.8,-0.8);
-		else if(time> 1.3) RobotDrive.winch(0.7);
-		else if(time> 1.1) RobotDrive.winch(0.4);
-		else if(time> 1.0) RobotDrive.stop().grab(true);
-		else if(time> 0.5) RobotDrive.drive(0.6);
+		/**/ if(time> 9.5) RobotDrive.stop();
+		else if(time> 4.6) RobotDrive.winch(0).grab(false);
+		else if(time> 4.2) RobotDrive.winch(-0.6);
+		else if(time> 4.1) RobotDrive.stop();
+		else if(time> 2.3) RobotDrive.drive(0.60);
+		else if(time> 2.5) RobotDrive.stop();
+		else if(time> 1.7) RobotDrive.winch(0).drive(-0.52,0.52);
+		else if(time> 1.4) RobotDrive.winch(0.7);
+		else if(time> 1.2) RobotDrive.winch(0.4);
+		else if(time> 1.1) RobotDrive.stop().grab(true);
+		else if(time> 0.5) RobotDrive.drive(0.37);
 		else /*1st to do*/ RobotDrive.grab(false);
 	}
 }

@@ -55,7 +55,7 @@ public class RobotDrive {
 	
 	public static RobotDrive drive(double left, double right, boolean half, boolean squared){
 		if(half)
-			getInstance().drive.tankDrive(left*0.6, right*0.6, false);
+			getInstance().drive.tankDrive(left*0.3, right*0.3, false);
 		else getInstance().drive.tankDrive(left, right, squared);
 		return getInstance();
 	}
@@ -65,7 +65,7 @@ public class RobotDrive {
 	}
 	
 	public static RobotDrive drive(double speed){
-		return drive(speed, speed, false, false);
+		return drive(-speed, -speed, false, false);
 	}
 	
 	public static RobotDrive stop(){
@@ -74,10 +74,10 @@ public class RobotDrive {
 	
 	public static RobotDrive winch(double power){
 		getInstance();
-		if(!instance.top.get() && power < 0) power = 0;
-		if(!instance.bottom.get() && power > 0) power = 0;
-		instance.winchLeft.set(power);
-		instance.winchRight.set(-power);
+		if(!instance.top.get() && power > 0) power = 0;
+		if(!instance.bottom.get() && power < 0) power = 0;
+		instance.winchLeft.set(-power);
+		instance.winchRight.set(power);
 		return instance;
 	}
 	

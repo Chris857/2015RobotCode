@@ -19,13 +19,13 @@ public class Robot extends YetiRobot implements PeriodController {
 		put("Happy Space Day. I am ready! :D");
 		
 		// Forcing an Autonomous to be selected.
-		init();
+		set = 0;
 		run(0);
 	}
 	
 	/*-- These are the PeriodController functions --*/
 	public void init(){
-		set = 0;
+		//set = 0; we don't actually need this. this way is better.
 	}
 	public void run(double time){
 		RobotDrive.lights(true);
@@ -45,7 +45,7 @@ public class Robot extends YetiRobot implements PeriodController {
 				default:
 					setAutonomousController(new DefaultAuton()); //nothing
 			}
-			put("Now using autonomous #"+set);
+			put("Now using auton #"+set);
 		}
 	}
 }

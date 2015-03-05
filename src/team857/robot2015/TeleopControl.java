@@ -18,7 +18,7 @@ public class TeleopControl implements PeriodController {
 		RobotDrive.drive(left.getY(), right.getY(), left.getTrigger()||right.getTrigger(),true);
 		if(operator.getButtonY()) RobotDrive.arms(true);
 		if(operator.getButtonA()) RobotDrive.arms(false);
-		RobotDrive.winch(-operator.getLeftAxisY());
+		RobotDrive.winch(operator.getLeftAxisY());
 		if(operator.getButtonX()) RobotDrive.grab(true);
 		if(operator.getButtonB()) RobotDrive.grab(false);
 	}
