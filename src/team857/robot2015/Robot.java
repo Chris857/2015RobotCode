@@ -25,10 +25,12 @@ public class Robot extends YetiRobot implements PeriodController {
 	
 	/*-- These are the PeriodController functions --*/
 	public void init(){
-		//set = 0; we don't actually need this. this way is better.
+		RobotDrive.getInstance().lights(true);
+	}
+	public void end(){
+		RobotDrive.getInstance().lights(false);
 	}
 	public void run(double time){
-		RobotDrive.lights(true);
 		if(set != m_ds.getStickButtons(3)){
 			set = m_ds.getStickButtons(3);
 			switch(set){
@@ -43,7 +45,7 @@ public class Robot extends YetiRobot implements PeriodController {
 				case 23:
 					setAutonomousController(new FancyAutonTwo());break; //touching grab & move
 				default:
-					setAutonomousController(new DefaultAuton()); //nothing
+					setAutonomousController(new PeriodController.NoOperation()); //nothing
 			}
 			put("Now using auton #"+set);
 		}

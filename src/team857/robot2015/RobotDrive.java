@@ -53,57 +53,56 @@ public class RobotDrive {
 		return value;
 	}
 	
-	public static RobotDrive drive(double left, double right, boolean half, boolean squared){
+	public RobotDrive drive(double left, double right, boolean half, boolean squared){
 		if(half)
-			getInstance().drive.tankDrive(left*0.3, right*0.3, false);
-		else getInstance().drive.tankDrive(left, right, squared);
-		return getInstance();
+			drive.tankDrive(left*0.3, right*0.3, false);
+		else drive.tankDrive(left, right, squared);
+		return this;
 	}
 	
-	public static RobotDrive drive(double left, double right){
+	public RobotDrive drive(double left, double right){
 		return drive(-left, -right, false, false);
 	}
 	
-	public static RobotDrive drive(double speed){
+	public RobotDrive drive(double speed){
 		return drive(-speed, -speed, false, false);
 	}
 	
-	public static RobotDrive stop(){
+	public RobotDrive stop(){
 		return drive(0);
 	}
 	
-	public static RobotDrive winch(double power){
-		getInstance();
-		if(!instance.top.get() && power > 0) power = 0;
-		if(!instance.bottom.get() && power < 0) power = 0;
-		instance.winchLeft.set(-power);
-		instance.winchRight.set(power);
-		return instance;
+	public RobotDrive winch(double power){
+		if(!top.get() && power > 0) power = 0;
+		if(!bottom.get() && power < 0) power = 0;
+		winchLeft.set(-power);
+		winchRight.set(power);
+		return this;
 	}
 	
-	public static RobotDrive arms(boolean out){
-		getInstance();
+	public RobotDrive arms(Boolean out){
+		if(null == out) return this;//safety
 		if(out){
-			instance.armLeft.set(DoubleSolenoid.Value.kReverse);
-			instance.armRight.set(DoubleSolenoid.Value.kReverse);
+			armLeft.set(DoubleSolenoid.Value.kReverse);
+			armRight.set(DoubleSolenoid.Value.kReverse);
 		} else {
-			instance.armLeft.set(DoubleSolenoid.Value.kForward);
-			instance.armRight.set(DoubleSolenoid.Value.kForward);
+			armLeft.set(DoubleSolenoid.Value.kForward);
+			armRight.set(DoubleSolenoid.Value.kForward);
 		}
-		return instance;
+		return this;
 	}
 	
-	public static RobotDrive grab(boolean closed){
-		getInstance();
+	public RobotDrive grab(Boolean closed){
+		if(null == closed) return this;//safety
 		if(closed)
-			instance.grabber.set(DoubleSolenoid.Value.kForward);
-		else instance.grabber.set(DoubleSolenoid.Value.kReverse);
-		return instance;
+			grabber.set(DoubleSolenoid.Value.kForward);
+		else grabber.set(DoubleSolenoid.Value.kReverse);
+		return this;
 	}
 	
-	public static RobotDrive lights(boolean on){
-		getInstance();
+	public RobotDrive lights(Boolean on){
+		if(null == on) return this;//safety
 		//if(on) instance.lights.set(Relay.Value.kOn);// else instance.lights.set(Relay.Value.kOff);
-		return instance;
+		return this;
 	}
 }

@@ -102,6 +102,9 @@ public abstract class YetiRobot extends RobotBase {
         while(true){//we are eternal
             if(isDisabled()){
             	if(!disabledInited){
+            		if(testInited) testController.end();
+            		if(autonInited) autonController.end();
+            		if(teleopInited) teleopController.end();
             		LiveWindow.setEnabled(false);
             		disabledController.init();
             		disabledInited = true;
@@ -119,6 +122,9 @@ public abstract class YetiRobot extends RobotBase {
             	}
             } else if(isTest()){
             	if(!testInited){
+            		if(autonInited) autonController.end();
+            		if(teleopInited) teleopController.end();
+            		if(disabledInited) disabledController.end();
             		LiveWindow.setEnabled(true);
             		testController.init();
             		disabledInited = false;
@@ -136,6 +142,9 @@ public abstract class YetiRobot extends RobotBase {
             	}
             } else if(isAutonomous()){
                 if(!autonInited){
+                	if(testInited) testController.end();
+            		if(teleopInited) teleopController.end();
+            		if(disabledInited) disabledController.end();
                     LiveWindow.setEnabled(false);
                     autonController.init();
                     disabledInited = false;
@@ -153,6 +162,9 @@ public abstract class YetiRobot extends RobotBase {
                 }
             } else {
             	if(!teleopInited){
+            		if(testInited) testController.end();
+            		if(autonInited) autonController.end();
+            		if(disabledInited) disabledController.end();
             		LiveWindow.setEnabled(false);
             		teleopController.init();
             		disabledInited = false;

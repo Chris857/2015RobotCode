@@ -10,9 +10,14 @@ public interface PeriodController {
 	 * @param time The current time of the period.
 	 */
 	public void run(double time);
+	/**
+	 * This function is run at the start of another period when coming out of this period
+	 */
+	public void end();
 	
 	public class NoOperation implements PeriodController {
 		public void init(){}
 		public void run(double time){}
+		public void end(){}
 	}
 }
