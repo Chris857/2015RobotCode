@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 import team857.yetiRobot.PeriodController;
 
 public class Recorder implements PeriodController {
-	private short[][] m_jAxis = new short[6][12];
 	private short[] m_jButtons = new short[6];
+	private byte[][] m_jAxis = new byte[6][12];
 	private FileOutputStream out = null;
 	private RecordController teleopController;
 	
@@ -22,7 +22,7 @@ public class Recorder implements PeriodController {
 			e_over = ByteBuffer.allocate(10); // quick stuff for time and overhead (changes)
 	
 	private short tmp_short;
-	private short[] tmp_sha;
+	private byte[] tmp_sha;
 	
 	private String outputFile;
 	
@@ -51,14 +51,19 @@ public class Recorder implements PeriodController {
 	public void provideOutputFile(String filenameWithoutExtension){
 		outputFile = filenameWithoutExtension + ".rta";
 	}
+	private byte[] m_stb(short[] array){
+		byte[] x = new byte[array.length];
+		for(byte c = 0; c<array.length;c++) x[c] = (byte)array[c];
+		return x;
+	}
 	
 	public void init(){
-		m_jAxis[0] = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)0);
-		m_jAxis[1] = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)1);
-		m_jAxis[2] = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)2);
-		m_jAxis[3] = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)3);
-		m_jAxis[4] = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)4);
-		m_jAxis[5] = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)5);
+		m_jAxis[0] = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)0));
+		m_jAxis[1] = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)1));
+		m_jAxis[2] = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)2));
+		m_jAxis[3] = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)3));
+		m_jAxis[4] = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)4));
+		m_jAxis[5] = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)5));
 		m_jButtons[0] = (short) FRCNetworkCommunicationsLibrary.HALGetJoystickButtons((byte)0, ByteBuffer.allocateDirect(1));
 		m_jButtons[1] = (short) FRCNetworkCommunicationsLibrary.HALGetJoystickButtons((byte)1, ByteBuffer.allocateDirect(1));
 		m_jButtons[2] = (short) FRCNetworkCommunicationsLibrary.HALGetJoystickButtons((byte)2, ByteBuffer.allocateDirect(1));
@@ -122,64 +127,34 @@ public class Recorder implements PeriodController {
 			e_update.putShort(tmp_short);
 			e_buto += 32;
 		}
-		if(Arrays.equals(m_jAxis[0], (tmp_sha = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)0)))){
+		if(Arrays.equals(m_jAxis[0], (tmp_sha = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)0))))){
 			m_jAxis[0] = tmp_sha;
-			e_update.putShort(tmp_sha[0]);
-			e_update.putShort(tmp_sha[1]);
-			e_update.putShort(tmp_sha[2]);
-			e_update.putShort(tmp_sha[3]);
-			e_update.putShort(tmp_sha[4]);
-			e_update.putShort(tmp_sha[5]);
+			e_update.put(tmp_sha);
 			e_axis += 1;
 		}
-		if(Arrays.equals(m_jAxis[1], (tmp_sha = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)1)))){
+		if(Arrays.equals(m_jAxis[1], (tmp_sha = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)1))))){
 			m_jAxis[1] = tmp_sha;
-			e_update.putShort(tmp_sha[0]);
-			e_update.putShort(tmp_sha[1]);
-			e_update.putShort(tmp_sha[2]);
-			e_update.putShort(tmp_sha[3]);
-			e_update.putShort(tmp_sha[4]);
-			e_update.putShort(tmp_sha[5]);
+			e_update.put(tmp_sha);
 			e_axis += 2;
 		}
-		if(Arrays.equals(m_jAxis[2], (tmp_sha = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)2)))){
+		if(Arrays.equals(m_jAxis[2], (tmp_sha = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)2))))){
 			m_jAxis[2] = tmp_sha;
-			e_update.putShort(tmp_sha[0]);
-			e_update.putShort(tmp_sha[1]);
-			e_update.putShort(tmp_sha[2]);
-			e_update.putShort(tmp_sha[3]);
-			e_update.putShort(tmp_sha[4]);
-			e_update.putShort(tmp_sha[5]);
+			e_update.put(tmp_sha);
 			e_axis += 4;
 		}
-		if(Arrays.equals(m_jAxis[3], (tmp_sha = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)3)))){
+		if(Arrays.equals(m_jAxis[3], (tmp_sha = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)3))))){
 			m_jAxis[3] = tmp_sha;
-			e_update.putShort(tmp_sha[0]);
-			e_update.putShort(tmp_sha[1]);
-			e_update.putShort(tmp_sha[2]);
-			e_update.putShort(tmp_sha[3]);
-			e_update.putShort(tmp_sha[4]);
-			e_update.putShort(tmp_sha[5]);
+			e_update.put(tmp_sha);
 			e_axis += 8;
 		}
-		if(Arrays.equals(m_jAxis[4], (tmp_sha = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)4)))){
+		if(Arrays.equals(m_jAxis[4], (tmp_sha = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)4))))){
 			m_jAxis[4] = tmp_sha;
-			e_update.putShort(tmp_sha[0]);
-			e_update.putShort(tmp_sha[1]);
-			e_update.putShort(tmp_sha[2]);
-			e_update.putShort(tmp_sha[3]);
-			e_update.putShort(tmp_sha[4]);
-			e_update.putShort(tmp_sha[5]);
+			e_update.put(tmp_sha);
 			e_axis += 16;
 		}
-		if(Arrays.equals(m_jAxis[5], (tmp_sha = FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)5)))){
+		if(Arrays.equals(m_jAxis[5], (tmp_sha = m_stb(FRCNetworkCommunicationsLibrary.HALGetJoystickAxes((byte)5))))){
 			m_jAxis[5] = tmp_sha;
-			e_update.putShort(tmp_sha[0]);
-			e_update.putShort(tmp_sha[1]);
-			e_update.putShort(tmp_sha[2]);
-			e_update.putShort(tmp_sha[3]);
-			e_update.putShort(tmp_sha[4]);
-			e_update.putShort(tmp_sha[5]);
+			e_update.put(tmp_sha);
 			e_axis += 32;
 		}
 		try {
