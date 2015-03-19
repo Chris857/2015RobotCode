@@ -20,6 +20,11 @@ public class Playback implements PeriodController {
 	private final short[] buttons = new short[6];
 	private final byte[][] sticks = new byte[6][12];
 	private boolean DO_NOT_PROCEED = false;
+	private double offsetTime = 0;
+	
+	public void setOffset(double time){
+		offsetTime = time;
+	}
 	
 	private Playback(String auton){
 		BufferedInputStream file = null;
@@ -61,10 +66,11 @@ public class Playback implements PeriodController {
 		return (short) ((a<<8)+b);
 	}
 	
-	public void init(){/*what to do*/}
+	public void init(){}
 	public void end(){/*likewise here*/}
 	public void run(double time){
-		if(DO_NOT_PROCEED) return;
+		time-=offsetTime;
+		if(DO_NOT_PROCEED || time<0) return;
 		
 		byte[] inputs = events.get(events.floorKey((long)Math.floor(time*1000)));
 		int bc = 2, sc = 2; // offset
