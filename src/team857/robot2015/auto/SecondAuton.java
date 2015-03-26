@@ -5,7 +5,7 @@ import team857.yetiRobot.PeriodController;
 
 public class SecondAuton extends PeriodController.NoOperation {
 	public void run(double time){
-		/**/ if(time> 4.0) RobotDrive.getInstance().stop();
+		/**/ if(time> 4.75) RobotDrive.getInstance().stop();
 		else /*1st to do*/ RobotDrive.getInstance().drive(0.4);
 	}
 }

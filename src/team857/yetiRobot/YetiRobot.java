@@ -53,20 +53,36 @@ public abstract class YetiRobot extends RobotBase {
 	 */
 	public void setAutonomousController(PeriodController controller){autonController = controller;}
 	/**
+	 * Gets Autonomous-Period controller.
+	 */
+	public PeriodController getAutonomousController(){return autonController;}
+	/**
 	 * Sets the Teleop-Period controller.
 	 * @param controller Our controller.
 	 */
 	public void setTeleopController(PeriodController controller){teleopController = controller;}
+	/**
+	 * Gets Teleop-Period controller.
+	 */
+	public PeriodController getTeleopController(){return teleopController;}
 	/**
 	 * Sets the Disabled-Period controller.
 	 * @param controller Our controller.
 	 */
 	public void setDisabledController(PeriodController controller){disabledController = controller;}
 	/**
+	 * Gets Disalbed-Period controller.
+	 */
+	public PeriodController getDisabledController(){return disabledController;}
+	/**
 	 * Sets the Test-Period controller.
 	 * @param controller Our controller.
 	 */
 	public void setTestController(PeriodController controller){testController = controller;}
+	/**
+	 * Gets Test-Period controller.
+	 */
+	public PeriodController getTestController(){return testController;}
 	/**
 	 * Sets the Controller that runs over the entire life of the robot.
 	 * @param controller Our controller.

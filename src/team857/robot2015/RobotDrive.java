@@ -14,7 +14,7 @@ public class RobotDrive {
 	public Talon winchLeft, winchRight;
 	public Compressor compressor;
 	public DigitalInput top, bottom;
-	public DoubleSolenoid armLeft, armRight, grabber;
+	public DoubleSolenoid armLeft, armRight, grabber, kicker;
 	public Relay lights;
 	
 	/**
@@ -33,6 +33,7 @@ public class RobotDrive {
 		armLeft = new DoubleSolenoid(0,1);
 		grabber = new DoubleSolenoid(2,3);
 		armRight= new DoubleSolenoid(7,6);
+		kicker = new DoubleSolenoid(4,5);
 		lights = new Relay(0);
 		lights.setDirection(Relay.Direction.kForward);
 	}
@@ -92,6 +93,13 @@ public class RobotDrive {
 		return this;
 	}
 	
+	public RobotDrive kicker(boolean out){
+		if(out)
+			kicker.set(DoubleSolenoid.Value.kReverse);
+		else kicker.set(DoubleSolenoid.Value.kForward);
+		return this;
+	}
+	
 	public RobotDrive grab(Boolean closed){
 		if(null == closed) return this;//safety
 		if(closed)
@@ -102,7 +110,7 @@ public class RobotDrive {
 	
 	public RobotDrive lights(Boolean on){
 		if(null == on) return this;//safety
-		//if(on) instance.lights.set(Relay.Value.kOn);// else instance.lights.set(Relay.Value.kOff);
+		if(on) instance.lights.set(Relay.Value.kOn); else instance.lights.set(Relay.Value.kOff);
 		return this;
 	}
 }
