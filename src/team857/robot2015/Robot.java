@@ -1,29 +1,29 @@
 package team857.robot2015;
 
-//import java.io.File;
-//import java.nio.file.Files;
-//import java.nio.file.Path;
+import java.io.File;
+import java.io.IOException;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import team857.robot2015.auto.*;
-//import team857.robot2015.record.ReplayingController;
 import team857.yetiRobot.*;
-//import team857.yetiRobot.record.*;
 
 public class Robot extends YetiRobot implements PeriodController {
 	CameraServer camera;
 	int set;
+	private RecorderSelector selector;
 	
-	/*private class RecorderSelector implements Recorder.Selector {
-		public Path getPath(){
-			return new File(System.getProperty("user.home"), ""+m_ds.getStickButtons(3)+".rta").toPath();
+	private class RecorderSelector implements PlaybackStateMachine.FileSelector {
+		public File getFile(){
+			return new File(System.getProperty("user.home"), ""+m_ds.getStickButtons(3)+".rta");
 		}
-	}*/
+	}
 	
 	public void start(){
+		selector = new RecorderSelector();
 		setTeleopController(new TeleopControl());
 		setDisabledController(this);
-		//setTestController(new Recorder(new RecorderSelector(), getTeleopController()));
+		setTestController(new PlaybackStateMachine(getTeleopController(), selector));
 		
 		//camera = CameraServer.getInstance();
 		//camera.setQuality(50);
@@ -62,10 +62,14 @@ public class Robot extends YetiRobot implements PeriodController {
 				case 7:
 					setAutonomousController(new ToteContainerFlatFieldAuton());break;
 				default:
-					setAutonomousController(new PeriodController.NoOperation());
-					/*if(set!=0 && Files.exists(new File(System.getProperty("user.home"),""+set+".rta").toPath()))
-						setAutonomousController(new Replayer(new File(System.getProperty("user.home"), ""+set+".rta"), new ReplayingController()));
-					else setAutonomousController(new PeriodController.NoOperation()); //nothing*/
+					if(set != 0 && selector.getFile().exists()){
+						try {
+							setAutonomousController(new PlaybackStateMachine(new PlaybackTeleopController(), selector).load());
+						} catch(IOException e){
+							DriverStation.reportError("Woops! Failed to read auton file. Falling back to no-op.", false);
+							setAutonomousController(new PeriodController.NoOperation());
+						}
+					} else  setAutonomousController(new PeriodController.NoOperation());
 			}
 			put("Now using auton #"+set);
 		}
