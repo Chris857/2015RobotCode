@@ -10,7 +10,7 @@ public class ToteContainerOverPlatformAuton extends PeriodController.NoOperation
 		else if(time> 2.6) RobotDrive.getInstance().drive(-0.2,0.65);
 		else if(time> 2.2) RobotDrive.getInstance().stop().arms(true);
 		else if(time> 1.7) RobotDrive.getInstance().winch(0).drive(0.6);
-		else if(time> 0.5) RobotDrive.getInstance().winch(-0.6); 
+		else if(time> 0.5) RobotDrive.getInstance().winch(0.6); 
 		else /*1st to do*/ RobotDrive.getInstance().grab(true);
 	}
 }

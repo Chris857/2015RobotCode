@@ -11,11 +11,12 @@ public class RobotDrive {
 	private static RobotDrive instance = null;
 	
 	public edu.wpi.first.wpilibj.RobotDrive drive;
-	public Talon winchLeft, winchRight;
+	public Talon winchLeft, winchRight, armWinch;
 	public Compressor compressor;
 	public DigitalInput top, bottom;
 	public DoubleSolenoid armLeft, armRight, grabber, kicker;
-	public Relay lights;
+	public Relay lights, containerRelay;
+	private boolean container = false;
 	
 	/**
 	 * for internal use
@@ -36,6 +37,9 @@ public class RobotDrive {
 		kicker = new DoubleSolenoid(4,5);
 		lights = new Relay(0);
 		lights.setDirection(Relay.Direction.kForward);
+		containerRelay = new Relay(2);
+		containerRelay.setDirection(Relay.Direction.kBoth);
+		armWinch = new Talon(6);
 	}
 	
 	public static RobotDrive getInstance(){
@@ -111,6 +115,17 @@ public class RobotDrive {
 	public RobotDrive lights(Boolean on){
 		if(null == on) return this;//safety
 		if(on) instance.lights.set(Relay.Value.kOn); else instance.lights.set(Relay.Value.kOff);
+		return this;
+	}
+	
+	public RobotDrive container(boolean toggle){
+		if(toggle){
+			container = !container;
+			if(container)
+				containerRelay.set(Relay.Value.kForward);
+			else
+				containerRelay.set(Relay.Value.kReverse);
+		}
 		return this;
 	}
 }

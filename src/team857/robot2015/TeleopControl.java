@@ -6,6 +6,7 @@ public class TeleopControl extends PeriodController.NoOperation {
 	RobotDrive robot;
 	Joystick left, right;
 	XboxController operator;
+	boolean lastC = false;
 	public TeleopControl(){
 		left = new Joystick(1,0.01);
 		right = new Joystick(2,0.01);
@@ -24,6 +25,7 @@ public class TeleopControl extends PeriodController.NoOperation {
 			.grab(operator.getButtonB()?false:null)
 			.arms(operator.getButtonY()?true:null)
 			.arms(operator.getButtonA()?false:null)
-			.kicker(operator.getLeftBumper()||operator.getRightBumper());
+			.kicker(operator.getRightBumper())
+			.container((operator.getLeftBumper()==lastC)?false:(lastC=operator.getLeftBumper()));
 	}
 }

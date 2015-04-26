@@ -5,7 +5,7 @@ import team857.yetiRobot.*;
 
 public class AutonControl extends PeriodController.NoOperation {
 	public void run(double time){
-		/**/ if(time> 7.0) RobotDrive.getInstance().stop();
+		/**/ if(time> 7.75) RobotDrive.getInstance().stop();
 		else if(time> 3.0) RobotDrive.getInstance().drive(0.4);
 		else /*1st to do*/;//don't do anything. wait.
 	}
